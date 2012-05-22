@@ -1,0 +1,8 @@
+---
+layout: default
+title: "Home page"
+---
+
+<% for article in @collections.articles.toArray() : %>
+  <%- article.content %>
+<% end %>

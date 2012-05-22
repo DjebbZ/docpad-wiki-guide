@@ -1,0 +1,10 @@
+---
+layout: default
+---
+
+<article>
+  <h2><%= @document.title %></h2>
+
+  <div class="date">written on <span class="date"><%= @document.date.toShortDateString() %></span></div>
+  <%- @content %>
+</article>

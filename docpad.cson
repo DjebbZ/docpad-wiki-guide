@@ -1,0 +1,22 @@
+# The DocPad Configuration File
+# It is simply a CoffeeScript Object which is parsed by CSON
+{
+  # TemplateData data are accessible directly from the 'this/@' keyword in layouts and documents.
+  templateData:
+    # Let's create a place where we gather all data about the site...
+    site:
+      # ... like its author,
+      author: "John Doe"
+      # its name
+      title: "John Doe loves animals"
+      # and a custom footer message. The """ comes from CoffeeScript and is used to embed long strings.
+      footerMessage: """
+        John Doe loves animals is property of John Doe. Copyright 2012 John Doe. All your animals are belong to us.
+      """
+
+  # We're extending the core collections object
+  collections:
+    # This collection named 'articles' fetches the documents with the 'layout' property set to 'article'
+    articles: (database) ->
+      database.createLiveChildCollection().findAll(layout: 'article').setComparator(date:-1)
+}
