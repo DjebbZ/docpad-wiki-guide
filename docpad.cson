@@ -18,5 +18,5 @@
   collections:
     # This collection named 'articles' fetches the documents with the 'layout' property set to 'article'
     articles: (database) ->
-      database.createLiveChildCollection().findAll(layout: 'article').setComparator(date:-1)
+      database.createLiveChildCollection().findAll(layout: 'article')
 }

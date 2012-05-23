@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="author" content="<%= @site.author %>" />
-  <title><%= @document.title %> - <%= @site.title %></title>
+  <title><%= @document.title %> - <%= @site.name %></title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>

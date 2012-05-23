@@ -328,13 +328,54 @@ Read on !
 
 DocPad allows us to describe some data about our website in a single configuration file, the `docpad.cson` file. This file should be located in the root folder of the website, at the same level of the `src` and `out` folders. The `.cson` extension comes from the [CSON](https://github.com/bevry/cson) library. It allows to write `.json` files in CoffeeScript, and DocPad uses it for this file.
 
-Here we're going to show basic usage of the file.
+We're going to show basic usage of the file. A good practice is to store in this file the textual elements common to all or several pages of the website. The website name and author are good examples, as well as a common footer message. To add such data, create a `docpad.cson` file in the root folder, and paste the content below. The content is easy to understand and is self-documented, read the comments to understand it :
 
-The `docpad.cson` possibilities are beyond the scope of this guide. To discover them, I suggest looking at the example [`docpad.cson`](https://github.com/bevry/website.docpad/blob/master/docpad.cson) file from the [website.docpad](https://github.com/bevry/website.docpad) skeleton.
+```
+# The DocPad Configuration File
+# It is simply a CoffeeScript Object that is parsed by CSON
+# The lines starting with a '#' are comments
+{
+  # TemplateData data are accessible directly from the 'this/@' keyword in layouts and documents.
+  templateData:
+    # Let's create a place where we gather all data about the site...
+    site:
+      # ... like its author ...
+      author: "John Doe"
+      # ... its name ...
+      name: "John Doe loves animals"
+      # ... and a custom footer message. The """ notation comes from CoffeeScript and is used to embed long strings and can contain HTML tags too.
+      footerMessage: """
+        John Doe loves animals is property of John Doe. Copyright 2012 John Doe. All your animals are belong to us.
+      """
+}
+```
+
+With such a file, we could display the site name in an Eco file by writing `<%= @site.name %>`. Easy, right ? The important thing here is that under `templateData` no naming convention is enforced, you're free to name oand organize your custom data as you see fit.
+
+Let's add them in `default.html.eco`, like this :
+
+``` html
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="<%= @site.author %>" />
+  <title><%= @document.title %> - <%= @site.name %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<a href="/" class="logo">John Doe loves animals</a>
+<%- @content %>
+<footer><%= @site.footerMessage %></footer>
+</body>
+</html>
+```
+
+The `docpad.cson` possibilities are beyond the scope of this guide. To discover them, I suggest looking at the well documented example [`docpad.cson`](https://github.com/bevry/website.docpad/blob/master/docpad.cson) file from the [website.docpad](https://github.com/bevry/website.docpad) skeleton.
 
 ### QueryEngine
 
-DocPad, in its internals, creates a "database" of all the content under the `src` folder and gives access to it through [QueryEngine](https://github.com/bevry/query-engine). QueryEngine provides extensive Querying, Filtering, and Searching abilities for [Backbone.js](http://documentcloud.github.com/backbone/) Collections as well as JavaScript arrays and objects. For the technical note, every content in DocPad's internals is represented as a Backbone Model. (I can see some of you smiling :)
+DocPad, in its internals, creates a "database" of all the content located in the `src` folder and gives access to it through [QueryEngine](https://github.com/bevry/query-engine). QueryEngine provides extensive Querying, Filtering, and Searching abilities for [Backbone.js](http://documentcloud.github.com/backbone/) Collections as well as JavaScript arrays and objects. For the technical note, every content in DocPad's internals is represented as a Backbone Model. (I can see some of you smiling :)
 
 DocPad provides a few Collections ready to use :
 
@@ -343,7 +384,7 @@ DocPad provides a few Collections ready to use :
  - `collections.layouts` is a collection of all files under the `src/layouts` folder
  - `collections.files` is a collection of all files under the `src/public` folder
 
-What this means is that we can use QueryEngine to select very precisely some pieces of content from the `documents` collection, and display them where we want in our website.
+What that means is that we can use QueryEngine to select very precisely some pieces of content from the `documents` collection, and display them where we want in our website.
 
 We could directly use QueryEngine capabilities in our home page file, writing a few lines of code directly in our template. But instead, we will declare the collections we want to use in the docpad.cson file and make use of it.
 
